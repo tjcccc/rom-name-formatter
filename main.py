@@ -1,22 +1,24 @@
 import os
+import sys
 import tkinter as tk
 from models.rom_file import RomFile
+from models.rom_directory import RomDirectory
 
 
-def get_files(path, level=0):
+def get_files(path, path_level=0):
     if not os.path.exists(path) or path == '':
         return None
 
     rom_files = []
 
-    for root, dirs, files in os.walk(path):
+    for root, dirs, files in os.walk(path, topdown=True):
         for file in files:
-            if len(dirs) > 0:
-                for sub_path in dirs:
-                    get_files(os.path.join(root, sub_path), level)
-                    rom_files.append(RomFile(root, file, level))
-            else:
-                rom_files.append(RomFile(root, file, 0))
+            rom_files.append(RomFile(root, file, path_level))
+
+        if len(dirs) > 0:
+            path_level += 1
+            for sub_path in dirs:
+                get_files(os.path.join(root, sub_path), path_level)
 
     return rom_files
 
@@ -41,13 +43,23 @@ if __name__ == "__main__":
     # app.mainloop()
 
     # test
-    my_rom_files = get_files('')
+    args = sys.argv[1:]
+    if len(args) == 0:
+        print('Please provide a path.')
+        exit(0)
+    root_path = args[0]
+    if not os.path.exists(root_path):
+        print('Invalid path.')
+        exit(0)
+    my_rom_files = get_files(root_path)
 
     if my_rom_files is None:
-        print('No files')
+        print('No files.')
         exit(0)
 
     for rom_file in my_rom_files:
-        print(f'{rom_file.get_dir_level()} - {rom_file}')
-        # if rom_file.get_filename() == "ne_game":
-        #     rename_file(rom_file, "renamed_game")
+        print(f'{rom_file.get_dir_level()} - {rom_file.get_relative_path(root_path)} - {rom_file.get_full_dir()}')
+
+    rom_directory = RomDirectory(my_rom_files)
+    rom_directory.debug_print()
+
