@@ -5,6 +5,13 @@ from models.rom_file import RomFile
 from models.rom_directory import RomDirectory
 
 
+def generate_roms_directory(path):
+    if not os.path.exists(path) or path == '':
+        return None
+    roms_directory = RomDirectory(path)
+    return roms_directory
+
+
 def get_files(path, path_level=0):
     if not os.path.exists(path) or path == '':
         return None
@@ -47,19 +54,10 @@ if __name__ == "__main__":
     if len(args) == 0:
         print('Please provide a path.')
         exit(0)
-    root_path = args[0]
+    root_path = os.path.expanduser(args[0]) if args[0][0] == '~' else args[0]
     if not os.path.exists(root_path):
-        print('Invalid path.')
+        print(f'Invalid path: {root_path}')
         exit(0)
-    my_rom_files = get_files(root_path)
-
-    if my_rom_files is None:
-        print('No files.')
-        exit(0)
-
-    for rom_file in my_rom_files:
-        print(f'{rom_file.get_dir_level()} - {rom_file.get_relative_path(root_path)} - {rom_file.get_full_dir()}')
-
-    rom_directory = RomDirectory(my_rom_files)
-    rom_directory.debug_print()
+    rom_directory = generate_roms_directory(root_path)
+    rom_directory.debug_print(0, root_path)
 
