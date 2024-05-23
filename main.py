@@ -3,7 +3,7 @@ import sys
 import tkinter as tk
 from models.rom_file import RomFile
 from models.rom_directory import RomDirectory
-
+from services.files_service import get_files
 
 def generate_roms_directory(path):
     if not os.path.exists(path) or path == '':
@@ -12,22 +12,22 @@ def generate_roms_directory(path):
     return roms_directory
 
 
-def get_files(path, path_level=0):
-    if not os.path.exists(path) or path == '':
-        return None
-
-    rom_files = []
-
-    for root, dirs, files in os.walk(path, topdown=True):
-        for file in files:
-            rom_files.append(RomFile(root, file, path_level))
-
-        if len(dirs) > 0:
-            path_level += 1
-            for sub_path in dirs:
-                get_files(os.path.join(root, sub_path), path_level)
-
-    return rom_files
+# def get_files(path, path_level=0):
+#     if not os.path.exists(path) or path == '':
+#         return None
+#
+#     rom_files = []
+#
+#     for root, dirs, files in os.walk(path, topdown=True):
+#         for file in files:
+#             rom_files.append(RomFile(root, file, path_level))
+#
+#         if len(dirs) > 0:
+#             path_level += 1
+#             for sub_path in dirs:
+#                 get_files(os.path.join(root, sub_path), path_level)
+#
+#     return rom_files
 
 
 def rename_file(rom_file: RomFile, new_name: str):
@@ -58,6 +58,10 @@ if __name__ == "__main__":
     if not os.path.exists(root_path):
         print(f'Invalid path: {root_path}')
         exit(0)
-    rom_directory = generate_roms_directory(root_path)
-    rom_directory.debug_print(0, root_path)
+    # rom_directory = generate_roms_directory(root_path)
+    # rom_directory.debug_print(0, root_path)
+    rom_files = get_files(root_path)
+    for rom_file in rom_files:
+        print(rom_file.get_file_fullname())
+    print(f'Found {len(rom_files)} files.')
 
