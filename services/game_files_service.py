@@ -1,5 +1,5 @@
 import os
-from models.rom_file import RomFile
+from models.game_file import GameFile
 
 
 excluded_system_files = ['desktop.ini', 'Thumbs.db', '.DS_Store', '.localized', '.gitignore']
@@ -11,21 +11,32 @@ excluded_files = excluded_system_files
 excluded_extensions = excluded_image_extensions + excluded_media_extension + excluded_execution_extensions
 
 
-def get_files(path, path_level=0):
+def get_game_files(path, specific_name=None):
     if not os.path.exists(path) or path == '':
         return None
 
-    rom_files = []
+    game_files = []
 
     for root, dirs, files in os.walk(path, topdown=True):
         for file in files:
             if file not in excluded_files and not file.endswith(tuple(excluded_extensions)):
-                rom_files.append(RomFile(root, file, path_level))
+                game_file = GameFile(root, file)
+                if specific_name is None or specific_name == game_file.get_filename():
+                    game_files.append(game_file)
 
         if len(dirs) > 0:
-            path_level += 1
             for sub_path in dirs:
-                get_files(os.path.join(root, sub_path), path_level)
+                get_game_files(os.path.join(root, sub_path), specific_name)
 
-    return rom_files
+    return game_files
 
+
+def rename_game_file(game_file: GameFile, new_name: str):
+    file_extension = game_file.get_file_extension()
+    new_file_fullname = new_name + file_extension
+    os.rename(game_file.get_path(), os.path.join(game_file.get_full_dir(), new_file_fullname))
+
+
+def rename_game_files(game_files: list, new_name: str):
+    for game_file in game_files:
+        rename_game_file(game_file, new_name)

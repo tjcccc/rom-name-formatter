@@ -1,12 +1,20 @@
 from os import path
+from enum import Enum
 
 
-class RomFile:
-    def __init__(self, filepath, full_filename, path_level=0):
+class GameFileType(Enum):
+    UNKNOWN = 'Unknown'
+    ROM = 'Rom'
+    SAVE = 'Save'
+    STATE = 'SaveState'
+
+
+class GameFile:
+    def __init__(self, filepath, full_filename, file_type: GameFileType = GameFileType.UNKNOWN):
         self.path = filepath
         self.folder = path.basename(filepath)
         self.name = full_filename
-        self.path_level = path_level
+        self.file_type = file_type
 
     def __str__(self):
         return path.join(self.path, self.name)
@@ -20,12 +28,6 @@ class RomFile:
     def get_relative_path(self, root_path):
         return path.relpath(self.path, root_path)
 
-    def get_dir(self):
-        if self.path_level == 0:
-            return ''
-        else:
-            return self.folder
-
     def get_file_fullname(self):
         return self.name
 
@@ -33,11 +35,9 @@ class RomFile:
         return path.splitext(self.name)[0]
 
     def get_file_extension(self):
-        # if file does not have extension
         if len(path.splitext(self.name)[1]) == 0:
             return ''
         return path.splitext(self.name)[1]
 
-    def get_dir_level(self):
-        return self.path_level
-
+    def get_file_type(self):
+        return str(self.file_type.value)

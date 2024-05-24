@@ -1,15 +1,16 @@
 import os
 import sys
 import tkinter as tk
-from models.rom_file import RomFile
-from models.rom_directory import RomDirectory
-from services.files_service import get_files
+from models.game_file import GameFile, GameFileType
+from models.game_directory import GameDirectory
+from services.game_files_service import get_game_files, rename_game_files
 
-def generate_roms_directory(path):
+
+def generate_files_directory(path, file_type=GameFileType.ROM):
     if not os.path.exists(path) or path == '':
         return None
-    roms_directory = RomDirectory(path)
-    return roms_directory
+    game_directory = GameDirectory(path, file_type)
+    return game_directory
 
 
 # def get_files(path, path_level=0):
@@ -30,10 +31,10 @@ def generate_roms_directory(path):
 #     return rom_files
 
 
-def rename_file(rom_file: RomFile, new_name: str):
-    file_extension = rom_file.get_file_extension()
+def rename_file(game_file: GameFile, new_name: str):
+    file_extension = game_file.get_file_extension()
     new_file_fullname = new_name + file_extension
-    os.rename(rom_file.get_path(), os.path.join(rom_file.get_dir(), new_file_fullname))
+    os.rename(game_file.get_path(), os.path.join(game_file.get_full_dir(), new_file_fullname))
 
 
 class App(tk.Tk):
@@ -58,10 +59,23 @@ if __name__ == "__main__":
     if not os.path.exists(root_path):
         print(f'Invalid path: {root_path}')
         exit(0)
-    # rom_directory = generate_roms_directory(root_path)
-    # rom_directory.debug_print(0, root_path)
-    rom_files = get_files(root_path)
-    for rom_file in rom_files:
-        print(rom_file.get_file_fullname())
-    print(f'Found {len(rom_files)} files.')
 
+    # game_files_directory = generate_files_directory(root_path)
+    # game_files_directory.debug_print(0, root_path)
+
+    game_files = get_game_files(root_path)
+    for game_file in game_files:
+        print(game_file.get_file_fullname())
+    print(f'Found {len(game_files)} files.')
+
+    search_files = get_game_files(root_path, specific_name='game')
+    for search_file in search_files:
+        print(search_file.get_file_fullname())
+    print(f'Found {len(search_files)} files.')
+
+    # rename_game_files(search_files, 'new game')
+    # print('Renamed files.')
+    # game_files = get_game_files(root_path)
+    # for game_file in game_files:
+    #     print(game_file.get_file_fullname())
+    # print(f'Found {len(game_files)} files.')
