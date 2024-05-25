@@ -1,10 +1,14 @@
 import os
 import sys
 import tkinter as tk
+from models.config import Config
 from models.game_file import GameFile, GameFileType
 from models.game_directory import GameDirectory
+from services.config_service import load_config, save_config
 from services.game_directories_service import rename_game_directory_name
 from services.game_files_service import get_game_files, rename_game_files
+
+config_path = 'config.json'
 
 
 def generate_files_directory(path, file_type=GameFileType.ROM):
@@ -51,7 +55,8 @@ if __name__ == "__main__":
     # app = App()
     # app.mainloop()
 
-    # test
+    # test - get files
+
     args = sys.argv[1:]
     if len(args) == 0:
         print('Please provide a path.')
@@ -64,22 +69,25 @@ if __name__ == "__main__":
     game_files_directory = generate_files_directory(root_path)
     game_files_directory.debug_print(0, root_path)
 
-    old_dir_name = 'ss game'
-    new_dir_name = 'saturn'
+    # test - change folder name
 
-    ss_game_directory: GameDirectory
-    if game_files_directory.get_folder_name() == old_dir_name:
-        rename_game_directory_name(game_files_directory, new_dir_name)
-        # game_files_directory = generate_files_directory(root_path)
-        game_files_directory.debug_print(0, root_path)
-    else:
-        for sub_game_directory in game_files_directory.sub_directories:
-            if sub_game_directory.get_folder_name() == old_dir_name:
-                rename_game_directory_name(sub_game_directory, new_dir_name)
-                # game_files_directory = generate_files_directory(root_path)
-                game_files_directory.debug_print(0, root_path)
-                break
+    # old_dir_name = 'ss game'
+    # new_dir_name = 'saturn'
+    #
+    # ss_game_directory: GameDirectory
+    # if game_files_directory.get_folder_name() == old_dir_name:
+    #     rename_game_directory_name(game_files_directory, new_dir_name)
+    #     # game_files_directory = generate_files_directory(root_path)
+    #     game_files_directory.debug_print(0, root_path)
+    # else:
+    #     for sub_game_directory in game_files_directory.sub_directories:
+    #         if sub_game_directory.get_folder_name() == old_dir_name:
+    #             rename_game_directory_name(sub_game_directory, new_dir_name)
+    #             # game_files_directory = generate_files_directory(root_path)
+    #             game_files_directory.debug_print(0, root_path)
+    #             break
 
+    # test - change file name
 
     # game_files = get_game_files(root_path)
     # for game_file in game_files:
@@ -97,3 +105,11 @@ if __name__ == "__main__":
     # for game_file in game_files:
     #     print(game_file.get_file_fullname())
     # print(f'Found {len(game_files)} files.')
+
+    # test - config
+    # config: Config = load_config(config_path)
+    # print(config)
+    # config.add_tag('new tag 1')
+    # save_config(config, config_path)
+    # config: Config = load_config(config_path)
+    # print(config)
