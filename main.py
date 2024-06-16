@@ -1,12 +1,7 @@
 import os
-import sys
-import tkinter as tk
-from models.config import Config
+from views.main_view import MainView
 from models.game_file import GameFile, GameFileType
 from models.game_directory import GameDirectory
-from services.config_service import load_config, save_config
-from services.game_directories_service import rename_game_directory_name
-from services.game_files_service import get_game_files, rename_game_files
 
 config_path = 'config.json'
 
@@ -42,32 +37,33 @@ def rename_file(game_file: GameFile, new_name: str):
     os.rename(game_file.get_path(), os.path.join(game_file.get_full_dir(), new_file_fullname))
 
 
-class App(tk.Tk):
-    def __init__(self):
-        super().__init__()
-        self.title("Hello, Tkinter!")
-        self.geometry("300x150")
-        self.label = tk.Label(self, text="Hello, Tkinter!", font=("Helvetica", 24))
-        self.label.pack(padx=20, pady=20)
+# class App(tk.Tk):
+#     def __init__(self):
+#         super().__init__()
+#         self.title("Hello, Tkinter!")
+#         self.geometry("300x150")
+#         self.label = tk.Label(self, text="Hello, Tkinter!", font=("Helvetica", 24))
+#         self.label.pack(padx=20, pady=20)
 
 
 if __name__ == "__main__":
+    MainView()
     # app = App()
     # app.mainloop()
 
     # test - get files
 
-    args = sys.argv[1:]
-    if len(args) == 0:
-        print('Please provide a path.')
-        exit(0)
-    root_path = os.path.expanduser(args[0]) if args[0][0] == '~' else args[0]
-    if not os.path.exists(root_path):
-        print(f'Invalid path: {root_path}')
-        exit(0)
-
-    game_files_directory = generate_files_directory(root_path)
-    game_files_directory.debug_print(0, root_path)
+    # args = sys.argv[1:]
+    # if len(args) == 0:
+    #     print('Please provide a path.')
+    #     exit(0)
+    # root_path = os.path.expanduser(args[0]) if args[0][0] == '~' else args[0]
+    # if not os.path.exists(root_path):
+    #     print(f'Invalid path: {root_path}')
+    #     exit(0)
+    #
+    # game_files_directory = generate_files_directory(root_path)
+    # game_files_directory.debug_print(0, root_path)
 
     # test - change folder name
 

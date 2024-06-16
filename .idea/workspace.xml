@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eab678e6-2ffc-4c24-b2d0-e1a07e7c864d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/config.json.template" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/config_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/styles/app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/directories_form.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/form_input.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/main_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/config_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/config_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +76,7 @@
         </ENTRIES>
       </EXTENSION>
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
-      <option name="PARAMETERS" value="c:\tempfiles\roms" />
+      <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -90,8 +93,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-PY-241.15989.155" />
-        <option value="bundled-python-sdk-babbdf50b680-7c6932dee5e4-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.15989.155" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.17890.14" />
+        <option value="bundled-python-sdk-5b207ade9991-7e9c3bbb6e34-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.17890.14" />
       </set>
     </attachedChunks>
   </component>
@@ -109,7 +112,11 @@
       <workItem from="1716165124810" duration="11861000" />
       <workItem from="1716338179567" duration="1721000" />
       <workItem from="1716516891839" duration="3059000" />
-      <workItem from="1716597347361" duration="7127000" />
+      <workItem from="1716597347361" duration="7181000" />
+      <workItem from="1716898327312" duration="815000" />
+      <workItem from="1717452726139" duration="676000" />
+      <workItem from="1718439170643" duration="6109000" />
+      <workItem from="1718503078314" duration="12416000" />
     </task>
     <servers />
   </component>
@@ -118,6 +125,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/rom_name_formatter$rom_file.coverage" NAME="rom_file Coverage Results" MODIFIED="1716120405327" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
-    <SUITE FILE_PATH="coverage/rom_name_formatter$main.coverage" NAME="main Coverage Results" MODIFIED="1716604995909" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rom_name_formatter$main.coverage" NAME="main Coverage Results" MODIFIED="1718547001448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

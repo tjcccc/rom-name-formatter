@@ -1,5 +1,5 @@
 class Config:
-    def __init__(self, roms_directory: str, saves_directory: str, states_directory: str, tags: [str], name_format: str):
+    def __init__(self, roms_directory: str = '', saves_directory: str = '', states_directory: str = '', tags: [str] = '', name_format: str = ''):
         self.roms_directory: str = roms_directory
         self.saves_directory: str = saves_directory
         self.states_directory: str = states_directory
