@@ -10,6 +10,8 @@ class DirectoriesForm(ttk.Frame):
     def __init__(self, root, config_service: ConfigService, on_change=None):
         super().__init__(master=root)
 
+        self.columnconfigure(0, weight=1)
+
         # self.roms_directory = ''
         # self.saves_directory = ''
         # self.states_directory = ''
@@ -25,11 +27,11 @@ class DirectoriesForm(ttk.Frame):
         self.states_directory_input = FormInput(self, 'STATES', Layout.component_width(12), state='disabled')
         self.states_directory_input.grid(column=0, row=2, sticky='ew')
         self.choose_rom_directory_button = ttk.Button(self, text='Choose', command=lambda: self.choose_directory('roms'))
-        self.choose_rom_directory_button.grid(column=1, row=0, sticky='ew', padx=Layout.spacing())
+        self.choose_rom_directory_button.grid(column=1, row=0, sticky='w', padx=Layout.spacing())
         self.choose_saves_directory_button = ttk.Button(self, text='Choose', command=lambda: self.choose_directory('saves'))
-        self.choose_saves_directory_button.grid(column=1, row=1, sticky='ew', padx=Layout.spacing())
+        self.choose_saves_directory_button.grid(column=1, row=1, sticky='w', padx=Layout.spacing())
         self.choose_states_directory_button = ttk.Button(self, text='Choose', command=lambda: self.choose_directory('states'))
-        self.choose_states_directory_button.grid(column=1, row=2, sticky='ew', padx=Layout.spacing())
+        self.choose_states_directory_button.grid(column=1, row=2, sticky='w', padx=Layout.spacing())
 
         # Initialize values
         self.initialize_directories(self.config.roms_directory, self.config.saves_directory, self.config.states_directory)
@@ -39,17 +41,17 @@ class DirectoriesForm(ttk.Frame):
         self.saves_directory_input.set_input(saves_directory)
         self.states_directory_input.set_input(states_directory)
 
-    def choose_directory(self, type: str):
+    def choose_directory(self, dir_type: str):
         folder_path = filedialog.askdirectory()
 
         if folder_path:
-            if type == 'roms':
+            if dir_type == 'roms':
                 self.config.roms_directory = folder_path
                 self.roms_directory_input.set_input(folder_path)
-            elif type == 'saves':
+            elif dir_type == 'saves':
                 self.config.saves_directory = folder_path
                 self.saves_directory_input.set_input(folder_path)
-            elif type == 'states':
+            elif dir_type == 'states':
                 self.config.states_directory = folder_path
                 self.states_directory_input.set_input(folder_path)
 
@@ -57,7 +59,3 @@ class DirectoriesForm(ttk.Frame):
 
         if self.on_change:
             self.on_change()
-
-    # def get_directories(self):
-    #     return self.roms_directory_input.get_input(), self.saves_directory_input.get_input(), self.states_directory_input.get_input()
-

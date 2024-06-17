@@ -10,6 +10,7 @@ class MainView:
         self.root = tk.Tk()
         self.root.geometry('1000x1000')
         self.root.title('Rom Name Formatter')
+        self.root.columnconfigure(0, weight=1)
 
         self.config_service = ConfigService('./config.json')
         config = self.config_service.load_config()
@@ -19,10 +20,11 @@ class MainView:
         # self.states_directory = tk.StringVar(value=self.config.states_directory)
 
         main_frame = ttk.Frame(self.root, padding=Layout.spacing(2))
-        main_frame.grid()
+        main_frame.grid(sticky='nsew')
+        main_frame.columnconfigure(0, weight=1)
 
         self.directories_form_container = DirectoriesForm(main_frame, self.config_service, self.directories_on_change)
-        self.directories_form_container.grid(column=0, row=0, sticky='nsew', padx=Layout.spacing(2))
+        self.directories_form_container.grid(column=0, row=0, padx=Layout.spacing(2), sticky='ew')
 
         test_label = ttk.Label(main_frame, textvariable=self.roms_directory)
         test_label.grid(column=0, row=1, sticky='nsew', padx=Layout.spacing(2))
@@ -32,4 +34,3 @@ class MainView:
     def directories_on_change(self):
         config = self.config_service.load_config()
         self.roms_directory.set(config.roms_directory)
-
