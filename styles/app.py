@@ -7,3 +7,7 @@ class Layout:
     @staticmethod
     def component_width(scale=1):
         return 8 * scale
+
+    @staticmethod
+    def component_height(scale=1):
+        return 8 * scale

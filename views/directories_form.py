@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 from views.form_input import FormInput
+from services.game_files_service import get_game_files
 from services.config_service import ConfigService
 from styles.app import Layout
 
@@ -59,3 +60,17 @@ class DirectoriesForm(ttk.Frame):
 
         if self.on_change:
             self.on_change()
+
+    def clear(self):
+        self.roms_directory_input.set_input('')
+        self.saves_directory_input.set_input('')
+        self.states_directory_input.set_input('')
+        self.config.roms_directory = ''
+        self.config.saves_directory = ''
+        self.config.states_directory = ''
+        self.config_service.save_config(self.config)
+
+    def load_roms_directory(self):
+        roms_files = get_game_files(self.config.roms_directory)
+        return roms_files
+

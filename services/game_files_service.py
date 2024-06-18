@@ -13,7 +13,7 @@ excluded_extensions = excluded_image_extensions + excluded_media_extension + exc
 
 def get_game_files(path, specific_name=None):
     if not os.path.exists(path) or path == '':
-        return None
+        return []
 
     game_files = []
 

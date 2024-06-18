@@ -10,7 +10,7 @@ class ConfigService:
     def load_config(self):
         if not os.path.exists(self.config_path):
             self.create_config_file()
-            print('No config file founded. Created a new config.')
+            print('No config file was founded. Created a new config.')
         with open(self.config_path, 'r') as config_file:
             config_json = json.load(config_file)
             config = Config(**config_json)

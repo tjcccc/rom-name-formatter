@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
+from models.game_directory import GameDirectory
+from models.game_file import GameFile, GameFileType
 from views.directories_form import DirectoriesForm
+from views.files_list import FilesList
 from services.config_service import ConfigService
 from styles.app import Layout
 
@@ -23,14 +26,33 @@ class MainView:
         main_frame.grid(sticky='nsew')
         main_frame.columnconfigure(0, weight=1)
 
+        # Directories of Roms, Saves, and States
         self.directories_form_container = DirectoriesForm(main_frame, self.config_service, self.directories_on_change)
         self.directories_form_container.grid(column=0, row=0, padx=Layout.spacing(2), sticky='ew')
 
-        test_label = ttk.Label(main_frame, textvariable=self.roms_directory)
-        test_label.grid(column=0, row=1, sticky='nsew', padx=Layout.spacing(2))
+        # Clear and Load Directories and Buttons
+        button_group = ttk.Frame(main_frame)
+        button_group.grid(column=0, row=1, sticky='ew')
+        button_group.columnconfigure(0, weight=1)
+        button_group.columnconfigure(3, weight=1)
+        clear_button = ttk.Button(button_group, text='Clear', command=self.directories_form_container.clear)
+        clear_button.grid(column=1, row=1, pady=Layout.spacing(2))
+        load_roms_directory_button = ttk.Button(button_group, text='Load', command=self.load_roms_directory)
+        load_roms_directory_button.grid(column=2, row=1, pady=Layout.spacing(2))
+
+        # Rom Files List
+        self.files_list = FilesList(main_frame)
+        self.files_list.grid(column=0, row=2, padx=Layout.spacing(), pady=Layout.spacing(), sticky='nsew')
 
         self.root.mainloop()
 
     def directories_on_change(self):
+        pass
+        # config = self.config_service.load_config()
+        # self.roms_directory.set(config.roms_directory)
+
+    def load_roms_directory(self):
         config = self.config_service.load_config()
-        self.roms_directory.set(config.roms_directory)
+        roms_files = self.directories_form_container.load_roms_directory()
+        # game_directory = GameDirectory(config.roms_directory, file_type=GameFileType.ROM)
+        self.files_list.update_list(roms_files)
