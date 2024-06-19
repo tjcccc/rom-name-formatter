@@ -22,6 +22,8 @@ class MainView:
         # self.saves_directory = tk.StringVar(value=self.config.saves_directory)
         # self.states_directory = tk.StringVar(value=self.config.states_directory)
 
+        self.selected_file: GameFile | None = None
+
         main_frame = ttk.Frame(self.root, padding=Layout.spacing(2))
         main_frame.grid(sticky='nsew')
         main_frame.columnconfigure(0, weight=1)
@@ -35,9 +37,9 @@ class MainView:
         button_group.grid(column=0, row=1, sticky='ew')
         button_group.columnconfigure(0, weight=1)
         button_group.columnconfigure(3, weight=1)
-        clear_button = ttk.Button(button_group, text='Clear', command=self.directories_form_container.clear)
+        clear_button = ttk.Button(button_group, text='CLEAR', command=self.directories_form_container.clear)
         clear_button.grid(column=1, row=1, pady=Layout.spacing(2))
-        load_roms_directory_button = ttk.Button(button_group, text='Load', command=self.load_roms_directory)
+        load_roms_directory_button = ttk.Button(button_group, text='LOAD', command=self.load_roms_directory)
         load_roms_directory_button.grid(column=2, row=1, pady=Layout.spacing(2))
 
         # Rom Files List
@@ -53,6 +55,16 @@ class MainView:
 
     def load_roms_directory(self):
         config = self.config_service.load_config()
+        roms_path = config.roms_directory
         roms_files = self.directories_form_container.load_roms_directory()
         # game_directory = GameDirectory(config.roms_directory, file_type=GameFileType.ROM)
-        self.files_list.update_list(roms_files)
+        self.files_list.update_list(roms_path, roms_files, self.on_click_the_file)
+
+    def on_click_the_file(self, event):
+        if event.type != '5':
+            return
+        item = self.files_list.container.selection()[0]
+        file_index = int(self.files_list.container.item(item, 'values')[0]) - 1
+        file = self.files_list.get_file_by_index(file_index)
+        self.selected_file = file
+        print(file.get_path())

@@ -11,6 +11,7 @@ class DirectoriesForm(ttk.Frame):
     def __init__(self, root, config_service: ConfigService, on_change=None):
         super().__init__(master=root)
 
+        self.text = 'DIRECTORIES'
         self.columnconfigure(0, weight=1)
 
         # self.roms_directory = ''
@@ -27,11 +28,11 @@ class DirectoriesForm(ttk.Frame):
         self.saves_directory_input.grid(column=0, row=1, sticky='ew', pady=Layout.spacing())
         self.states_directory_input = FormInput(self, 'STATES', Layout.component_width(12), state='disabled')
         self.states_directory_input.grid(column=0, row=2, sticky='ew')
-        self.choose_rom_directory_button = ttk.Button(self, text='Choose', command=lambda: self.choose_directory('roms'))
+        self.choose_rom_directory_button = ttk.Button(self, text='SELECT', command=lambda: self.choose_directory('roms'))
         self.choose_rom_directory_button.grid(column=1, row=0, sticky='w', padx=Layout.spacing())
-        self.choose_saves_directory_button = ttk.Button(self, text='Choose', command=lambda: self.choose_directory('saves'))
+        self.choose_saves_directory_button = ttk.Button(self, text='SELECT', command=lambda: self.choose_directory('saves'))
         self.choose_saves_directory_button.grid(column=1, row=1, sticky='w', padx=Layout.spacing())
-        self.choose_states_directory_button = ttk.Button(self, text='Choose', command=lambda: self.choose_directory('states'))
+        self.choose_states_directory_button = ttk.Button(self, text='SELECT', command=lambda: self.choose_directory('states'))
         self.choose_states_directory_button.grid(column=1, row=2, sticky='w', padx=Layout.spacing())
 
         # Initialize values
