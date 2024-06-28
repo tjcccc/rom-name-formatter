@@ -4,6 +4,7 @@ from models.game_directory import GameDirectory
 from models.game_file import GameFile, GameFileType
 from views.directories_form import DirectoriesForm
 from views.files_list import FilesList
+from views.datum import Datum
 from services.config_service import ConfigService
 from styles.app import Layout
 
@@ -18,7 +19,7 @@ class MainView:
         self.config_service = ConfigService('./config.json')
         config = self.config_service.load_config()
 
-        self.roms_directory = tk.StringVar(value=config.roms_directory)
+        # self.roms_directory = tk.StringVar(value=config.roms_directory)
         # self.saves_directory = tk.StringVar(value=self.config.saves_directory)
         # self.states_directory = tk.StringVar(value=self.config.states_directory)
 
@@ -46,6 +47,12 @@ class MainView:
         self.files_list = FilesList(main_frame)
         self.files_list.grid(column=0, row=2, padx=Layout.spacing(), pady=Layout.spacing(), sticky='nsew')
 
+        # Current Selected File's Original Name
+        self.selected_file_name = Datum(main_frame, 'OLD', '', padding=Layout.spacing())
+        self.selected_file_name.grid(column=0, row=3, sticky='ew', padx=Layout.spacing())
+        self.new_file_name_preview = Datum(main_frame, 'NEW', '', padding=Layout.spacing())
+        self.new_file_name_preview.grid(column=0, row=4, sticky='ew', padx=Layout.spacing())
+
         self.root.mainloop()
 
     def directories_on_change(self):
@@ -66,5 +73,11 @@ class MainView:
         item = self.files_list.container.selection()[0]
         file_index = int(self.files_list.container.item(item, 'values')[0]) - 1
         file = self.files_list.get_file_by_index(file_index)
+
         self.selected_file = file
+
+        # Update components
+        self.selected_file_name.set_value(file.get_file_fullname())
+        self.new_file_name_preview.set_value(file.get_file_fullname())
+
         print(file.get_path())
