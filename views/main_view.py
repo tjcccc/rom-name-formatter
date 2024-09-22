@@ -20,7 +20,7 @@ class MainView:
 
         self.config_service = ConfigService('./config.json')
         config = self.config_service.load_config()
-        tags = config.tags
+        self.tags = config.tags
 
         # self.roms_directory = tk.StringVar(value=config.roms_directory)
         # self.saves_directory = tk.StringVar(value=self.config.saves_directory)
@@ -61,16 +61,19 @@ class MainView:
         self.new_file_name_format.grid(column=0, row=5, sticky='ew', padx=Layout.spacing())
 
         # Tag Input Group
-        self.tags_label = ttk.Label(main_frame, text='TAGS', anchor='w')
-        self.tags_label.grid(column=0, row=6, sticky='w', padx=Layout.spacing(2), pady=(Layout.spacing(), 0))
+        self.tags_header = ttk.Frame(main_frame)
+        self.tags_header.grid(column=0, row=6, sticky='ew')
+        self.tags_label = ttk.Label(self.tags_header, text='TAGS', anchor='w', width=Layout.component_width())
+        self.tags_label.grid(column=0, row=6, sticky='w', padx=(Layout.spacing(2), Layout.spacing()), pady=(Layout.spacing(), 0))
+        self.add_tag_input_button = ttk.Button(self.tags_header, text='+', command=self.add_custom_tag_input)
+        self.add_tag_input_button.grid(column=1, row=6, sticky='w', pady=(Layout.spacing(), 0))
+        # self.tags_label.columnconfigure(0, weight=1)
+        # self.add_tag_input_button.columnconfigure(1, weight=0)
         self.tags_container = ttk.Frame(main_frame)
         self.tags_container.grid(column=0, row=7, sticky='ew', padx=Layout.spacing(2))
-        total_tags_rows = int(math.ceil(len(tags) / 3))
-        print(total_tags_rows)
-        for index, tag in enumerate(tags):
+        for index, tag in enumerate(self.tags):
             column_number = int(index % 3)
             row_number = int(math.floor(index / 3))
-            print(column_number, row_number)
             custom_tag_input = CustomTagInput(self.tags_container, tag, padding=Layout.spacing())
             custom_tag_input.grid(column=column_number, row=row_number, sticky='ew', padx=Layout.spacing())
 
@@ -109,3 +112,14 @@ class MainView:
         new_file_name = self.new_file_name_format.get_input()
         self.new_file_name_preview.set_value(new_file_name)
         print(new_file_name)
+
+    def add_custom_tag_input(self):
+        if len(self.tags) == 24:
+            return
+        self.tags.append('')
+        tags_count = len(self.tags)
+        new_index = tags_count - 1
+        column_number = int(new_index % 3)
+        row_number = int(math.floor(new_index / 3))
+        new_custom_tag_input = CustomTagInput(self.tags_container, '', padding=Layout.spacing())
+        new_custom_tag_input.grid(column=column_number, row=row_number, sticky='ew', padx=Layout.spacing())
