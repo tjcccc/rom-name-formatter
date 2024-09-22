@@ -3,6 +3,7 @@ from views.main_view import MainView
 from models.game_file import GameFile, GameFileType
 from models.game_directory import GameDirectory
 
+
 config_path = 'config.json'
 
 
