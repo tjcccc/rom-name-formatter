@@ -39,9 +39,9 @@ class DirectoriesForm(ttk.Frame):
         self.initialize_directories(self.config.roms_directory, self.config.saves_directory, self.config.states_directory)
 
     def initialize_directories(self, roms_directory, saves_directory, states_directory):
-        self.roms_directory_input.set_input(roms_directory)
-        self.saves_directory_input.set_input(saves_directory)
-        self.states_directory_input.set_input(states_directory)
+        self.roms_directory_input.set_readonly_input(roms_directory)
+        self.saves_directory_input.set_readonly_input(saves_directory)
+        self.states_directory_input.set_readonly_input(states_directory)
 
     def choose_directory(self, dir_type: str):
         folder_path = filedialog.askdirectory()
@@ -49,13 +49,13 @@ class DirectoriesForm(ttk.Frame):
         if folder_path:
             if dir_type == 'roms':
                 self.config.roms_directory = folder_path
-                self.roms_directory_input.set_input(folder_path)
+                self.roms_directory_input.set_readonly_input(folder_path)
             elif dir_type == 'saves':
                 self.config.saves_directory = folder_path
-                self.saves_directory_input.set_input(folder_path)
+                self.saves_directory_input.set_readonly_input(folder_path)
             elif dir_type == 'states':
                 self.config.states_directory = folder_path
-                self.states_directory_input.set_input(folder_path)
+                self.states_directory_input.set_readonly_input(folder_path)
 
         self.config_service.save_config(self.config)
 
@@ -63,9 +63,9 @@ class DirectoriesForm(ttk.Frame):
             self.on_change()
 
     def clear(self):
-        self.roms_directory_input.set_input('')
-        self.saves_directory_input.set_input('')
-        self.states_directory_input.set_input('')
+        self.roms_directory_input.set_readonly_input('')
+        self.saves_directory_input.set_readonly_input('')
+        self.states_directory_input.set_readonly_input('')
         self.config.roms_directory = ''
         self.config.saves_directory = ''
         self.config.states_directory = ''

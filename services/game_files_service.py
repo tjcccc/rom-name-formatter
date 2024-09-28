@@ -40,3 +40,18 @@ def rename_game_file(game_file: GameFile, new_name: str):
 def rename_game_files(game_files: list, new_name: str):
     for game_file in game_files:
         rename_game_file(game_file, new_name)
+
+
+def get_formatted_filename_by_tags(tag_values: list, raw_filename: str, original_filename: GameFile | None):
+    formatted_filename = raw_filename
+    for tag_value in tag_values:
+        formatted_filename = formatted_filename.replace('{' + tag_value.tag + '}', tag_value.value)
+
+    if original_filename is None:
+        return formatted_filename
+
+    original_filename_without_extension = original_filename.get_filename()
+    extension = original_filename.get_file_extension()
+    formatted_filename = formatted_filename.replace('{old_name}', original_filename_without_extension)
+    formatted_filename = formatted_filename.replace('{ext}', extension)
+    return formatted_filename

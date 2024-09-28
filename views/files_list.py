@@ -37,6 +37,7 @@ class FilesList(ttk.Frame):
         scrollbar.grid(row=0, column=1, sticky='ns')
         self.container.config(yscrollcommand=scrollbar.set)
 
+
     def update_list(self, roms_root_path, rom_files: [GameFile], on_click=None):
         # Clear the tree
         for i in self.container.get_children():
@@ -48,6 +49,7 @@ class FilesList(ttk.Frame):
             self.container.insert('', 'end', values=(index + 1, file.get_relative_path(roms_root_path), file.get_file_fullname()))
         if on_click:
             self.container.bind('<ButtonRelease-1>', on_click)
+
 
     def get_file_by_index(self, index: int) -> GameFile:
         # find the file by index in indexed_files

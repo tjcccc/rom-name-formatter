@@ -37,7 +37,10 @@ class GameFile:
     def get_file_extension(self):
         if len(path.splitext(self.name)[1]) == 0:
             return ''
-        return path.splitext(self.name)[1]
+        rest_of_filename = path.splitext(self.name)[1]
+        if rest_of_filename[0] == '.':
+            return rest_of_filename[1:]
+        return rest_of_filename
 
     def get_file_type(self):
         return str(self.file_type.value)

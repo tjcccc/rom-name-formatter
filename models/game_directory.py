@@ -31,14 +31,18 @@ class GameDirectory:
         self.files = files
         self.sub_directories = sub_directories
 
+
     def get_path(self):
         return self.dir_path
+
 
     def get_relative_path(self, root_path):
         return os.path.relpath(self.dir_path, root_path)
 
+
     def get_folder_name(self):
         return os.path.basename(self.dir_path)
+
 
     def debug_print(self, level=0, root_path=None):
         current_relative_path = str(self.get_relative_path(root_path))
