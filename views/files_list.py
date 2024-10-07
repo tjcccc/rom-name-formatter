@@ -39,14 +39,15 @@ class FilesList(ttk.Frame):
 
 
     def update_list(self, roms_root_path, rom_files: [GameFile], on_click=None):
+        self.indexed_files = []
         # Clear the tree
         for i in self.container.get_children():
             self.container.delete(i)
         if len(rom_files) == 0:
             return
         for index, file in enumerate(rom_files):
-            self.indexed_files.append({'index': index, 'file': file})
-            self.container.insert('', 'end', values=(index + 1, file.get_relative_path(roms_root_path), file.get_file_fullname()))
+            iid = self.container.insert('', 'end', values=(index + 1, file.get_relative_path(roms_root_path), file.get_file_fullname()))
+            self.indexed_files.append({'index': index, 'iid': iid, 'file': file})
         if on_click:
             self.container.bind('<ButtonRelease-1>', on_click)
 
@@ -54,3 +55,13 @@ class FilesList(ttk.Frame):
     def get_file_by_index(self, index: int) -> GameFile:
         # find the file by index in indexed_files
         return next((indexed_file['file'] for indexed_file in self.indexed_files if indexed_file['index'] == index), None)
+
+
+    def update_file(self, index: int, roms_root_path, updated_filename):
+        # find the file by index in indexed_files
+        file = self.get_file_by_index(index)
+        if file is not None:
+            file.name = updated_filename
+            iid = next((indexed_file['iid'] for indexed_file in self.indexed_files if indexed_file['index'] == index), None)
+            if iid:
+                self.container.item(iid, values=(index + 1, file.get_relative_path(roms_root_path), file.get_file_fullname()))

@@ -1,4 +1,5 @@
 import math
+import os.path
 import tkinter as tk
 from tkinter import ttk
 from models.game_file import GameFile, GameFileType
@@ -18,6 +19,7 @@ class MainView:
     def __init__(self):
         self.root = tk.Tk()
         self.root.geometry('1000x1000')
+        self.root.resizable(False, False)
         self.root.title('Rom Name Formatter')
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
@@ -32,6 +34,7 @@ class MainView:
         # self.states_directory = tk.StringVar(value=self.config.states_directory)
 
         self.selected_file: GameFile | None = None
+        self.selected_file_index: int | None = None
 
         main_frame = ttk.Frame(self.root, padding=Layout.spacing(2))
         main_frame.grid(row=0, sticky='nsew')
@@ -94,9 +97,7 @@ class MainView:
 
 
     def directories_on_change(self):
-        pass
-        # config = self.config_service.load_config()
-        # self.roms_directory.set(config.roms_directory)
+        self.config = self.config_service.load_config()
 
 
     def load_roms_directory(self):
@@ -105,6 +106,10 @@ class MainView:
         roms_files = self.directories_form_container.load_roms_directory()
         # game_directory = GameDirectory(config.roms_directory, file_type=GameFileType.ROM)
         self.files_list.update_list(roms_path, roms_files, self.on_click_the_file)
+        self.selected_file = None
+        self.selected_file_index = None
+        self.selected_file_name.set_value('')
+        self.new_file_name_preview.set_value('')
 
 
     def on_click_the_file(self, event):
@@ -115,6 +120,7 @@ class MainView:
         file = self.files_list.get_file_by_index(file_index)
 
         self.selected_file = file
+        self.selected_file_index = file_index
 
         # Update components
         self.selected_file_name.set_value(file.get_file_fullname())
@@ -159,5 +165,48 @@ class MainView:
 
 
     def rename(self):
-        print(self.selected_file)
-        print(self.new_file_name_preview.get_value())
+        original_filename = self.selected_file.get_filename()
+        new_filename = self.new_file_name_preview.get_value()
+        extension = '.' + self.selected_file.get_file_extension()
+        new_filename_without_extension = new_filename.rstrip(extension)
+        print(f'original filename: {original_filename}')
+
+        print(f'original name with path: {self.selected_file}')
+        new_filename_path = os.path.join(self.selected_file.get_full_dir(), new_filename)
+        if os.path.exists(self.selected_file.get_path()):
+            print('file exists')
+            print(f'new name will be: {new_filename}')
+            os.rename(self.selected_file.get_path(), new_filename_path)
+            print(f'file renamed to: {new_filename_path}')
+
+        # find all files with selected_file's name in saves folder
+        saves_directory = self.config.saves_directory
+        print(f'saves directory: {saves_directory}')
+        print('related save files:')
+        for saves_root, dirs, files in os.walk(saves_directory):
+            for file in files:
+                original_savefile_path = os.path.join(saves_root, file)
+                if original_filename in file:
+                    new_save_filename = file.replace(original_filename, new_filename_without_extension)
+                    new_savefile_path = os.path.join(saves_root, new_save_filename)
+                    os.rename(original_savefile_path, new_savefile_path)
+                    print(f'{file} renamed to {new_save_filename}')
+
+        # find all files with selected_file's name in states folder
+        states_directory = self.config.states_directory
+        print(f'states directory: {states_directory}')
+        print('related states files:')
+        for states_root, dirs, files in os.walk(states_directory):
+            for file in files:
+                original_statefile_path = os.path.join(states_root, file)
+                if original_filename in file:
+                    new_state_filename = file.replace(original_filename, new_filename_without_extension)
+                    new_statefile_path = os.path.join(states_root, new_state_filename)
+                    os.rename(original_statefile_path, new_statefile_path)
+                    print(f'{file} renamed to {new_state_filename}')
+
+        # update the selected file's name
+        roms_path = self.config.roms_directory
+        self.selected_file.name = new_filename
+        self.files_list.update_file(self.selected_file_index, roms_path, new_filename)
+        self.selected_file_name.set_value(new_filename)

@@ -52,6 +52,13 @@ def get_formatted_filename_by_tags(tag_values: list, raw_filename: str, original
 
     original_filename_without_extension = original_filename.get_filename()
     extension = original_filename.get_file_extension()
-    formatted_filename = formatted_filename.replace('{old_name}', original_filename_without_extension)
-    formatted_filename = formatted_filename.replace('{ext}', extension)
-    return formatted_filename
+
+    if '{old_name}' in formatted_filename:
+        formatted_filename = formatted_filename.replace('{old_name}', original_filename_without_extension)
+
+    if '.{ext}' in formatted_filename:
+        formatted_filename = formatted_filename.replace('{ext}', extension)
+    else:
+        formatted_filename = formatted_filename.rstrip() + '.' + extension
+
+    return formatted_filename.lstrip()
