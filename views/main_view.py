@@ -180,30 +180,32 @@ class MainView:
             print(f'file renamed to: {new_filename_path}')
 
         # find all files with selected_file's name in saves folder
-        saves_directory = self.config.saves_directory
-        print(f'saves directory: {saves_directory}')
-        print('related save files:')
-        for saves_root, dirs, files in os.walk(saves_directory):
-            for file in files:
-                original_savefile_path = os.path.join(saves_root, file)
-                if original_filename in file:
-                    new_save_filename = file.replace(original_filename, new_filename_without_extension)
-                    new_savefile_path = os.path.join(saves_root, new_save_filename)
-                    os.rename(original_savefile_path, new_savefile_path)
-                    print(f'{file} renamed to {new_save_filename}')
+        if os.path.isdir(self.config.saves_directory):
+            saves_directory = self.config.saves_directory
+            print(f'saves directory: {saves_directory}')
+            print('related save files:')
+            for saves_root, dirs, files in os.walk(saves_directory):
+                for file in files:
+                    original_savefile_path = os.path.join(saves_root, file)
+                    if original_filename in file:
+                        new_save_filename = file.replace(original_filename, new_filename_without_extension)
+                        new_savefile_path = os.path.join(saves_root, new_save_filename)
+                        os.rename(original_savefile_path, new_savefile_path)
+                        print(f'{file} renamed to {new_save_filename}')
 
         # find all files with selected_file's name in states folder
-        states_directory = self.config.states_directory
-        print(f'states directory: {states_directory}')
-        print('related states files:')
-        for states_root, dirs, files in os.walk(states_directory):
-            for file in files:
-                original_statefile_path = os.path.join(states_root, file)
-                if original_filename in file:
-                    new_state_filename = file.replace(original_filename, new_filename_without_extension)
-                    new_statefile_path = os.path.join(states_root, new_state_filename)
-                    os.rename(original_statefile_path, new_statefile_path)
-                    print(f'{file} renamed to {new_state_filename}')
+        if os.path.isdir(self.config.states_directory):
+            states_directory = self.config.states_directory
+            print(f'states directory: {states_directory}')
+            print('related states files:')
+            for states_root, dirs, files in os.walk(states_directory):
+                for file in files:
+                    original_statefile_path = os.path.join(states_root, file)
+                    if original_filename in file:
+                        new_state_filename = file.replace(original_filename, new_filename_without_extension)
+                        new_statefile_path = os.path.join(states_root, new_state_filename)
+                        os.rename(original_statefile_path, new_statefile_path)
+                        print(f'{file} renamed to {new_state_filename}')
 
         # update the selected file's name
         roms_path = self.config.roms_directory
